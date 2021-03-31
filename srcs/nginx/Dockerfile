@@ -1,7 +1,7 @@
 FROM		alpine
 
 RUN			apk add nginx openssh openssl && \
-			# apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted --no-cache && \
+			apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted --no-cache && \
 			mkdir -p /run/nginx && \
 			echo "root:toor" | chpasswd && \
 			openssl req -x509 -nodes -days 365 \
@@ -13,12 +13,12 @@ RUN			apk add nginx openssh openssl && \
 # generate the host keys witch the default key file path, an empty passphrase, default bits for the key type, and deafault comment).
 RUN			ssh-keygen -A
 
-COPY		./srcs/sshd_conf			/etc/ssh/
-COPY		./srcs/telegraf.conf		/etc/telegraf/
-COPY		./srcs/nginx.conf			/etc/nginx/
-COPY		./srcs/ssl_params.conf		/etc/nginx/
-# COPY		./srcs/index.html			/var/www/
-COPY		./srcs/start_nginx.sh		/
+COPY		./srcs_nginx/sshd_conf			/etc/ssh/
+COPY		./srcs_nginx/telegraf.conf		/etc/telegraf/
+COPY		./srcs_nginx/nginx.conf			/etc/nginx/
+COPY		./srcs_nginx/ssl_params.conf	/etc/nginx/
+COPY		./srcs_nginx/index.html			/var/www/
+COPY		./srcs_nginx/start_nginx.sh		/
 
 # We customize the SSH welcome message
 RUN			echo 'Welcome to SSH of nginx by tkitagaw' > /etc/motd
